@@ -1,6 +1,5 @@
 package it.unical.igpe.editor;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -19,33 +18,49 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 
 	public int tilePx = 32;
 	public int dim = 2048;
-	public int mDim=64;
+	public int mDim = 64;
 
+	int playerPos = 10;
+	int keyPos = 6;
+	int redKeyPos = 7;
+	int blueKeyPos = 8;
+	int greenKeyPos = 9;
+	int enemy1Pos = 11;
+	int enemy2Pos = 12;
+	int stairPos = 2;
+
+	public static BufferedImageLoader loader=new BufferedImageLoader();
+	BufferedImage background=loader.loadImage("/background.png");
 	Vector<ImagePoint> points = new Vector<ImagePoint>();
-	
+
 	Point player;
 	Vector<Point> enemy;
-	
-	BufferedImage paintImage=null;
-	 
-	public int id=0;
 
-	int M[][]=new int [mDim][mDim];
+	BufferedImage paintImage = null;
+
+	public int id = 0;
+
+	int M[][] = new int[mDim][mDim];
 
 	public PreviewPanel() {
 		super();
 		addMouseListener(this);
 		addMouseMotionListener(this);
-	}
-
-	public void paintComponent(Graphics g) {
 
 		for (int i = 0; i < mDim; i++) {
 			for (int j = 0; j < mDim; j++) {
-				g.drawImage(ToolsPanel.bImage[0],i*tilePx,j*tilePx,null);
+				if (i == 0 || i == mDim - 1 || j == 0 || j == mDim - 1)
+					M[i][j] = 1;
+				else
+					M[i][j] = 0;
 			}
-					
+		
 		}
+		
+	}
+	public void paintComponent(Graphics g) {
+			
+		g.drawImage(background, 0, 0,null);
 
 		for (int i = 0; i < points.size(); i++) {
 			ImagePoint tmp = points.get(i);
@@ -55,8 +70,9 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 			g.setColor(Color.black);
 			g.fillRect(i, 0, 1, dim);
 			g.fillRect(0, i, dim, 1);
-			
+
 		}
+		
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -65,27 +81,20 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 	}
 
 	public void mousePressed(MouseEvent e) {
-		if (e.getX() < dim && e.getX() >= 0 && e.getY() < dim && e.getY() >= 0&& paintImage!=null) {
+		if (e.getX() < dim && e.getX() >= 0 && e.getY() < dim && e.getY() >= 0 && paintImage != null) {
 			int x = e.getX();
 			int y = e.getY();
 			Point p = clickToGrid(x, y);
-			ImagePoint ip = new ImagePoint(p,paintImage,id);
+			ImagePoint ip = new ImagePoint(p, paintImage, id);
 			removeDuplicate(p);
 			points.add(ip);
 
-				M[y/tilePx][x/tilePx] = id;
+			M[y / tilePx][x / tilePx] = id;
 			repaint();
-			if(id==9||(id>=13&&id<=17)){
+			if (id == stairPos || (id >= keyPos && id <= playerPos)) {
 				ToolsPanel.buttons[id].setEnabled(false);
-				id=0;
-				paintImage=null;
-			}
-			for (int i = 0; i < mDim; i++) {
-				for (int j = 0; j < mDim; j++) {
-					System.out.print(M[i][j]);
-				}
-				System.out.println( );
-				
+				id = 0;
+				paintImage = null;
 			}
 		}
 	}
@@ -102,23 +111,24 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 		for (int i = 0; i < points.size(); i++) {
 			ImagePoint tmp = points.get(i);
 			if (tmp.getPoint().equals(p)) {
-				if(tmp.type==type.PLAYER)
-					ToolsPanel.buttons[17].setEnabled(true);
-				else if(tmp.type==type.STAIR)
-					ToolsPanel.buttons[9].setEnabled(true);
-				else if(tmp.type==type.KEY)
-					ToolsPanel.buttons[13].setEnabled(true);
-				else if(tmp.type==type.REDKEY)
-					ToolsPanel.buttons[14].setEnabled(true);
-				else if(tmp.type==type.BLUEKEY)
-					ToolsPanel.buttons[15].setEnabled(true);			
-				else if(tmp.type==type.GREENKEY)
-					ToolsPanel.buttons[16].setEnabled(true);	
+				if (tmp.type == type.PLAYER)
+					ToolsPanel.buttons[playerPos].setEnabled(true);
+				else if (tmp.type == type.STAIR)
+					ToolsPanel.buttons[stairPos].setEnabled(true);
+				else if (tmp.type == type.KEY)
+					ToolsPanel.buttons[keyPos].setEnabled(true);
+				else if (tmp.type == type.REDKEY)
+					ToolsPanel.buttons[redKeyPos].setEnabled(true);
+				else if (tmp.type == type.BLUEKEY)
+					ToolsPanel.buttons[blueKeyPos].setEnabled(true);
+				else if (tmp.type == type.GREENKEY)
+					ToolsPanel.buttons[greenKeyPos].setEnabled(true);
 				points.remove(i);
-					return;
+				return;
 			}
 		}
 	}
+
 	public void mouseMoved(MouseEvent e) {
 	}
 

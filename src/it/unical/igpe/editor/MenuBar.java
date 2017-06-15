@@ -14,8 +14,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import it.unical.igpe.editor.ImagePoint.type;
-
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar {
 
@@ -60,6 +58,7 @@ public class MenuBar extends JMenuBar {
 		fileChooser.showSaveDialog(MenuBar.this);
 		File file = fileChooser.getSelectedFile();
 		fileChooser.setFileFilter(filter);
+		
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 
@@ -69,11 +68,7 @@ public class MenuBar extends JMenuBar {
 				}
 				bw.newLine();
 			}
-//			for (int i = 0; i < pp.points.size(); i++)
-//				if (pp.points.get(i).type == type.PLAYER||pp.points.get(i).type == type.ENEMY1||pp.points.get(i).type == type.ENEMY2||pp.points.get(i).type == type.ENEMY3||pp.points.get(i).type == type.ENEMY4) {
-//					bw.write(pp.points.get(i).toString());
-//					bw.newLine();
-//				}
+			
 
 			bw.flush();
 			bw.close();
@@ -115,7 +110,7 @@ public class MenuBar extends JMenuBar {
 					if (pp.M[i][j] == id)
 						pp.points.add(new ImagePoint(new Point(j, i), ToolsPanel.bImage[id], id));
 			
-					if (pp.M[i][j] == 9 || (pp.M[i][j] >= 13 && pp.M[i][j] <= 17)) {
+					if (pp.M[i][j] ==pp.stairPos || (pp.M[i][j] >= pp.keyPos && pp.M[i][j] <= pp.playerPos)) {
 						ToolsPanel.buttons[pp.M[i][j]].setEnabled(false);
 					} 	
 				}

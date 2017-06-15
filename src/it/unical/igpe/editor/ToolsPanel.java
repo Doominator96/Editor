@@ -11,25 +11,26 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class ToolsPanel extends JPanel implements ActionListener {
 	
-	public static int BNumber = 23;
+	public static int BNumber = 14;
 	private int iconDim = 32;
 	
-	
+	public static BufferedImageLoader loader;
 	
 	public static JButton[] buttons;
 	static BufferedImage[] bImage;
 	PreviewPanel pp;
-	public BufferedImageLoader loader;
-
+	
+	
+	@SuppressWarnings("static-access")
 	public ToolsPanel(PreviewPanel pp) {
 		super();
 		this.pp = pp;
 		this.buttons = new JButton[BNumber];
 		ToolsPanel.bImage = new BufferedImage[BNumber];
 		this.loader = new BufferedImageLoader();
+
 		for (int i = 0; i < BNumber; i++) {
 			buttons[i] = new JButton();
-			bImage[i] = null;
 			bImage[i] = loader.loadImage("/map (" + i + ").png");
 			buttons[i].addActionListener(this);
 			buttons[i].setIcon(new ImageIcon(bImage[i].getScaledInstance(iconDim, iconDim, 0)));

@@ -7,38 +7,35 @@ import java.awt.image.BufferedImage;
 public class ImagePoint {
 	
 	public enum type{
-		PLAYER,ENEMY1,ENEMY2,ENEMY3,ENEMY4,STAIR,KEY,REDKEY,BLUEKEY,GREENKEY;
+		PLAYER,ENEMY1,ENEMY2,STAIR,KEY,REDKEY,BLUEKEY,GREENKEY;
 	}
 	
 	private Point point;
 	private BufferedImage image;
 	type type;
 
+	@SuppressWarnings("static-access")
 	public ImagePoint(Point point,BufferedImage image,int id){
 
 		this.point = point;
 		this.image = image;
 		
-		if(id==9)
+		if(id==2)
 			type=type.STAIR;
-		if(id==13)
+		if(id==6)
 			type=type.KEY;
-		if(id==14)
+		if(id==7)
 			type=type.REDKEY;
-		if(id==15)
+		if(id==8)
 			type=type.BLUEKEY;
-		if(id==16)
+		if(id==9)
 			type=type.GREENKEY;
-		if(id==17)
+		if(id==10)
 			type=type.PLAYER;
-		if(id==18)
+		if(id==11)
 			type=type.ENEMY1;
-		if(id==19)
+		if(id==12)
 			type=type.ENEMY2;
-		if(id==20)
-			type=type.ENEMY3;		
-		if(id==21)
-			type=type.ENEMY4;
 	}
 
 
