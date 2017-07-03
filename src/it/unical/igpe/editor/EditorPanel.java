@@ -14,23 +14,22 @@ import javax.swing.JPanel;
 import it.unical.igpe.editor.ImagePoint.type;
 
 @SuppressWarnings("serial")
-public class PreviewPanel extends JPanel implements MouseListener, MouseMotionListener {
+public class EditorPanel extends JPanel implements MouseListener, MouseMotionListener {
 
 	public int tilePx = 32;
 	public int dim = 2048;
 	public int mDim = 64;
 
-	int playerPos = 10;
+	int stairPos = 2;
 	int keyPos = 6;
 	int redKeyPos = 7;
 	int blueKeyPos = 8;
 	int greenKeyPos = 9;
+	int playerPos = 10;
 	int enemy1Pos = 11;
-	int enemy2Pos = 12;
-	int stairPos = 2;
 
-	public static BufferedImageLoader loader=new BufferedImageLoader();
-	BufferedImage background=loader.loadImage("/background.png");
+	public static BufferedImageLoader loader = new BufferedImageLoader();
+	BufferedImage background = loader.loadImage("/background.png");
 	Vector<ImagePoint> points = new Vector<ImagePoint>();
 
 	Point player;
@@ -42,7 +41,7 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 
 	int M[][] = new int[mDim][mDim];
 
-	public PreviewPanel() {
+	public EditorPanel() {
 		super();
 		addMouseListener(this);
 		addMouseMotionListener(this);
@@ -54,13 +53,14 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 				else
 					M[i][j] = 0;
 			}
-		
+
 		}
-		
+
 	}
+
 	public void paintComponent(Graphics g) {
-			
-		g.drawImage(background, 0, 0,null);
+
+		g.drawImage(background, 0, 0, null);
 
 		for (int i = 0; i < points.size(); i++) {
 			ImagePoint tmp = points.get(i);
@@ -72,7 +72,7 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 			g.fillRect(0, i, dim, 1);
 
 		}
-		
+
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -82,47 +82,53 @@ public class PreviewPanel extends JPanel implements MouseListener, MouseMotionLi
 
 	public void mousePressed(MouseEvent e) {
 		if (e.getX() < dim && e.getX() >= 0 && e.getY() < dim && e.getY() >= 0 && paintImage != null) {
-			int x = e.getX();
-			int y = e.getY();
-			Point p = clickToGrid(x, y);
+			int x = e.getX() / tilePx;
+			int y = e.getY() / tilePx;
+			Point p = new Point(x, y);
 			ImagePoint ip = new ImagePoint(p, paintImage, id);
 			removeDuplicate(p);
 			points.add(ip);
 
-			M[y / tilePx][x / tilePx] = id;
+			M[y][x] = id;
 			repaint();
 			if (id == stairPos || (id >= keyPos && id <= playerPos)) {
-				ToolsPanel.buttons[id].setEnabled(false);
+				ButtonsPanel.buttons[id].setEnabled(false);
 				id = 0;
 				paintImage = null;
 			}
 		}
+		for (int i = 0; i < M.length; i++) {
+			for (int k = 0; k < M.length; k++) {
+				System.out.print(M[i][k]);
+			}
+			System.out.println();
+		}
 	}
 
-	private Point clickToGrid(int x, int y) {
-		int px = x;
-		int py = y;
-		px = px / tilePx;
-		py = py / tilePx;
-		return new Point(px, py);
-	}
+	// private Point clickToGrid(int x, int y) {
+	// int px = x;
+	// int py = y;
+	// px = px / tilePx;
+	// py = py / tilePx;
+	// return new Point(px, py);
+	// }
 
 	private void removeDuplicate(Point p) {
 		for (int i = 0; i < points.size(); i++) {
 			ImagePoint tmp = points.get(i);
 			if (tmp.getPoint().equals(p)) {
 				if (tmp.type == type.PLAYER)
-					ToolsPanel.buttons[playerPos].setEnabled(true);
+					ButtonsPanel.buttons[playerPos].setEnabled(true);
 				else if (tmp.type == type.STAIR)
-					ToolsPanel.buttons[stairPos].setEnabled(true);
+					ButtonsPanel.buttons[stairPos].setEnabled(true);
 				else if (tmp.type == type.KEY)
-					ToolsPanel.buttons[keyPos].setEnabled(true);
+					ButtonsPanel.buttons[keyPos].setEnabled(true);
 				else if (tmp.type == type.REDKEY)
-					ToolsPanel.buttons[redKeyPos].setEnabled(true);
+					ButtonsPanel.buttons[redKeyPos].setEnabled(true);
 				else if (tmp.type == type.BLUEKEY)
-					ToolsPanel.buttons[blueKeyPos].setEnabled(true);
+					ButtonsPanel.buttons[blueKeyPos].setEnabled(true);
 				else if (tmp.type == type.GREENKEY)
-					ToolsPanel.buttons[greenKeyPos].setEnabled(true);
+					ButtonsPanel.buttons[greenKeyPos].setEnabled(true);
 				points.remove(i);
 				return;
 			}

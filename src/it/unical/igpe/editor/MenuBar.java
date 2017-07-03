@@ -17,12 +17,12 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 @SuppressWarnings("serial")
 public class MenuBar extends JMenuBar {
 
-	PreviewPanel pp;
+	EditorPanel ep;
 	private FileNameExtensionFilter filter = new FileNameExtensionFilter("Map","map");
 
-	public MenuBar(PreviewPanel pp) {
+	public MenuBar(EditorPanel ep) {
 		super();
-		this.pp = pp;
+		this.ep = ep;
 
 		JMenu file = new JMenu("File");
 		JMenuItem save = new JMenuItem("Save");
@@ -57,14 +57,15 @@ public class MenuBar extends JMenuBar {
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.showSaveDialog(MenuBar.this);
 		File file = fileChooser.getSelectedFile();
+		file = new File(file.toString() + ".map");
 		fileChooser.setFileFilter(filter);
 		
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 
-			for (int i = 0; i < pp.mDim; i++) {
-				for (int j = 0; j < pp.mDim; j++) {
-					bw.write(pp.M[i][j] + " ");
+			for (int i = 0; i < ep.mDim; i++) {
+				for (int j = 0; j < ep.mDim; j++) {
+					bw.write(ep.M[i][j] + " ");
 				}
 				bw.newLine();
 			}
@@ -90,11 +91,11 @@ public class MenuBar extends JMenuBar {
 			clear3();
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String delimiters = " ";
-			for (int i = 0; i < pp.mDim; i++) {
+			for (int i = 0; i < ep.mDim; i++) {
 				String line = br.readLine();
 				String[] tokens = line.split(delimiters);
 				for (int j = 0; j < tokens.length; j++) {
-					pp.M[i][j] = Integer.parseInt(tokens[j]);
+					ep.M[i][j] = Integer.parseInt(tokens[j]);
 				}
 			}
 		
@@ -102,29 +103,33 @@ public class MenuBar extends JMenuBar {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		pp.points.clear();
+		ep.points.clear();
 
-		for (int i = 0; i < pp.mDim; i++)
-			for (int j = 0; j < pp.mDim; j++)
-				for (int id = 0; id < ToolsPanel.BNumber; id++) {
-					if (pp.M[i][j] == id)
-						pp.points.add(new ImagePoint(new Point(j, i), ToolsPanel.bImage[id], id));
+		for (int i = 0; i < ep.mDim; i++)
+			for (int j = 0; j < ep.mDim; j++)
+				for (int id = 0; id < ButtonsPanel.BNumber; id++) {
+					if (ep.M[i][j] == id)
+						ep.points.add(new ImagePoint(new Point(j, i), ButtonsPanel.bImage[id], id));
 			
-					if (pp.M[i][j] ==pp.stairPos || (pp.M[i][j] >= pp.keyPos && pp.M[i][j] <= pp.playerPos)) {
-						ToolsPanel.buttons[pp.M[i][j]].setEnabled(false);
+					if (ep.M[i][j] ==ep.stairPos || (ep.M[i][j] >= ep.keyPos && ep.M[i][j] <= ep.playerPos)) {
+						ButtonsPanel.buttons[ep.M[i][j]].setEnabled(false);
 					} 	
 				}
-		pp.repaint();
+		ep.repaint();
 	}
 	public void clear3(){
-		pp.points.clear();
-		pp.repaint();
-		for (int i = 0; i < pp.mDim; i++) {
-			for (int j = 0; j < pp.mDim; j++) {
-				pp.M[i][j] = 0;
+		ep.points.clear();
+		ep.repaint();
+		for (int i = 0; i < ep.mDim; i++) {
+			for (int j = 0; j < ep.mDim; j++) {
+				if (i == 0 || i == ep.mDim - 1 || j == 0 || j == ep.mDim - 1)
+					ep.M[i][j] = 1;
+				else
+					ep.M[i][j] = 0;
 			}
+
 		}
-		for (int i = 0; i < ToolsPanel.BNumber; i++)
-			ToolsPanel.buttons[i].setEnabled(true);
+		for (int i = 0; i < ButtonsPanel.BNumber; i++)
+			ButtonsPanel.buttons[i].setEnabled(true);
 	}
 }

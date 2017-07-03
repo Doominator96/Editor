@@ -13,11 +13,11 @@ public class Main extends JFrame {
 	public static void main(String[] args) {
 		
 		JFrame frame = new JFrame("Level Editor");
-		PreviewPanel panel =new PreviewPanel();
+		EditorPanel panel =new EditorPanel();
 		JScrollPane scroll = new JScrollPane(panel);
 
 		MenuBar mb= new MenuBar(panel);
-		ToolsPanel tools = new ToolsPanel(panel);
+		ButtonsPanel tools = new ButtonsPanel(panel);
 		
 		scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

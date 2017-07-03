@@ -1,5 +1,6 @@
 package it.unical.igpe.editor;
 
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -9,33 +10,34 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class ToolsPanel extends JPanel implements ActionListener {
+public class ButtonsPanel extends JPanel implements ActionListener {
 	
-	public static int BNumber = 14;
+	public static int BNumber = 12;
 	private int iconDim = 32;
 	
 	public static BufferedImageLoader loader;
 	
 	public static JButton[] buttons;
 	static BufferedImage[] bImage;
-	PreviewPanel pp;
+	EditorPanel ep;
 	
 	
 	@SuppressWarnings("static-access")
-	public ToolsPanel(PreviewPanel pp) {
+	public ButtonsPanel(EditorPanel ep) {
 		super();
-		this.pp = pp;
+		this.ep = ep;
 		this.buttons = new JButton[BNumber];
-		ToolsPanel.bImage = new BufferedImage[BNumber];
+		ButtonsPanel.bImage = new BufferedImage[BNumber];
 		this.loader = new BufferedImageLoader();
 
 		for (int i = 0; i < BNumber; i++) {
 			buttons[i] = new JButton();
-			bImage[i] = loader.loadImage("/map (" + i + ").png");
+			bImage[i] = loader.loadImage("/map_"+i+".png");
 			buttons[i].addActionListener(this);
 			buttons[i].setIcon(new ImageIcon(bImage[i].getScaledInstance(iconDim, iconDim, 0)));
 			add(buttons[i]);
 		}
+		
 																		
 	}
 
@@ -43,8 +45,8 @@ public class ToolsPanel extends JPanel implements ActionListener {
 		for (int i = 0; i < BNumber; i++) {
 			if (e.getSource() == buttons[i] && buttons[i].isEnabled() )
 			{
-				pp.paintImage = bImage[i];
-				pp.id = i;
+				ep.paintImage = bImage[i];
+				ep.id = i;
 			
 							}
 		}
