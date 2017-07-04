@@ -97,21 +97,7 @@ public class EditorPanel extends JPanel implements MouseListener, MouseMotionLis
 				paintImage = null;
 			}
 		}
-		for (int i = 0; i < M.length; i++) {
-			for (int k = 0; k < M.length; k++) {
-				System.out.print(M[i][k]);
-			}
-			System.out.println();
-		}
 	}
-
-	// private Point clickToGrid(int x, int y) {
-	// int px = x;
-	// int py = y;
-	// px = px / tilePx;
-	// py = py / tilePx;
-	// return new Point(px, py);
-	// }
 
 	private void removeDuplicate(Point p) {
 		for (int i = 0; i < points.size(); i++) {
