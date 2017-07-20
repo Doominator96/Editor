@@ -117,12 +117,8 @@ public class MenuBar extends JMenuBar {
 				}
 		ep.repaint();
 	}
-	@SuppressWarnings("static-access")
 	public void clear3(){
 		ep.points.clear();
-		ep.mDim = 64;
-		ep.background= ep.loader.loadImage("/background.png");
-		ep.tilePx=32;
 		ep.repaint();
 		for (int i = 0; i < ep.mDim; i++) {
 			for (int j = 0; j < ep.mDim; j++) {
@@ -135,8 +131,5 @@ public class MenuBar extends JMenuBar {
 		}
 		for (int i = 0; i < ButtonsPanel.BNumber; i++)
 			ButtonsPanel.buttons[i].setEnabled(true);
-	
-		ButtonsPanel.buttons[17].setEnabled(false);
 	}
-	
 }
