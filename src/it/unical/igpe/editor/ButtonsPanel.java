@@ -101,7 +101,7 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 						ep.M[i][j] = 0;
 				}}
 			buttons[17].setEnabled(true);
-			for (int i = 2; i <17 ; i++)
+			for (int i = 2; i <12 ; i++)
 				buttons[i].setEnabled(false);
 		}
 	}
