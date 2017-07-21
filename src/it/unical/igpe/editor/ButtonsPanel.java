@@ -92,7 +92,6 @@ public class ButtonsPanel extends JPanel implements ActionListener {
 			ep.mDim = 32;
 			ep.background= loader.loadImage("/backgroundMP.png");
 			ep.tilePx=64;
-			
 			for (int i = 0; i < ep.mDim; i++) {
 				for (int j = 0; j < ep.mDim; j++) {
 					if (i == 0 || i == ep.mDim - 1 || j == 0 || j == ep.mDim - 1)
