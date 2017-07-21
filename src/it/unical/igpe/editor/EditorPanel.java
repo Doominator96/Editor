@@ -84,8 +84,6 @@ public class EditorPanel extends JPanel implements MouseListener, MouseMotionLis
 		if (e.getX() < dim && e.getX() >= 0 && e.getY() < dim && e.getY() >= 0 && paintImage != null) {
 			int x = e.getX() / tilePx;
 			int y = e.getY() / tilePx;
-			System.out.println(x);
-			System.out.println(y);
 			if(x!=0&&x!=mDim-1&&y!=0&&y!=mDim-1){
 			Point p = new Point(x, y);
 			ImagePoint ip = new ImagePoint(p, paintImage, id);
