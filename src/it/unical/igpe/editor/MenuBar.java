@@ -61,26 +61,28 @@ public class MenuBar extends JMenuBar {
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.showSaveDialog(MenuBar.this);
-		File file = fileChooser.getSelectedFile();
-		file = new File(file.toString() + ".map");
-		fileChooser.setFileFilter(filter);
+		if (fileChooser.getSelectedFile() != null) {
+			File file = fileChooser.getSelectedFile();
+			file = new File(file.toString() + ".map");
+			fileChooser.setFileFilter(filter);
 
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+			try {
+				BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 
-			for (int i = 0; i < ep.mDim; i++) {
-				for (int j = 0; j < ep.mDim; j++) {
-					bw.write(ep.M[i][j] + " ");
+				for (int i = 0; i < ep.mDim; i++) {
+					for (int j = 0; j < ep.mDim; j++) {
+						bw.write(ep.M[i][j] + " ");
+					}
+					bw.newLine();
 				}
-				bw.newLine();
+
+				bw.flush();
+				bw.close();
+			} catch (Exception e) {
+				// TODO: handle exception
 			}
 
-			bw.flush();
-			bw.close();
-		} catch (Exception e) {
-			// TODO: handle exception
 		}
-
 	}
 
 	public void load3MP() {
@@ -89,43 +91,45 @@ public class MenuBar extends JMenuBar {
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.showOpenDialog(MenuBar.this);
-		File file = fileChooser.getSelectedFile();
-		try {
-			clear3();
-			ep.mDim = 32;
-			ep.tilePx = 64;
+		if (fileChooser.getSelectedFile() != null) {
+			File file = fileChooser.getSelectedFile();
+			try {
+				clear3();
+				ep.mDim = 32;
+				ep.tilePx = 64;
 
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String delimiters = " ";
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String delimiters = " ";
 
-			for (int i = 0; i < 32; i++) {
-				String line = br.readLine();
-				String[] tokens = line.split(delimiters);
-				for (int j = 0; j < tokens.length; j++) {
-					ep.M[i][j] = Integer.parseInt(tokens[j]);
-				}
-			}
-
-			br.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		ep.points.clear();
-
-		for (int i = 0; i < 32; i++)
-			for (int j = 0; j < 32; j++)
-				for (int id = 0; id < ButtonsPanel.BNumber; id++) {
-					if (ep.M[i][j] == id)
-						ep.points.add(new ImagePoint(new Point(j, i), ButtonsPanel.bImage[id], id));
-
-					if (ep.M[i][j] == ep.stairPos || (ep.M[i][j] >= ep.keyPos && ep.M[i][j] <= ep.playerPos)) {
-						ButtonsPanel.buttons[ep.M[i][j]].setEnabled(false);
+				for (int i = 0; i < 32; i++) {
+					String line = br.readLine();
+					String[] tokens = line.split(delimiters);
+					for (int j = 0; j < tokens.length; j++) {
+						ep.M[i][j] = Integer.parseInt(tokens[j]);
 					}
 				}
-		ep.repaint();
-		ButtonsPanel.buttons[17].setEnabled(true);
-		for (int i = 2; i < 12; i++)
-			ButtonsPanel.buttons[i].setEnabled(false);
+
+				br.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			ep.points.clear();
+
+			for (int i = 0; i < 32; i++)
+				for (int j = 0; j < 32; j++)
+					for (int id = 0; id < ButtonsPanel.BNumber; id++) {
+						if (ep.M[i][j] == id)
+							ep.points.add(new ImagePoint(new Point(j, i), ButtonsPanel.bImage[id], id));
+
+						if (ep.M[i][j] == ep.stairPos || (ep.M[i][j] >= ep.keyPos && ep.M[i][j] <= ep.playerPos)) {
+							ButtonsPanel.buttons[ep.M[i][j]].setEnabled(false);
+						}
+					}
+			ep.repaint();
+			ButtonsPanel.buttons[17].setEnabled(true);
+			for (int i = 2; i < 12; i++)
+				ButtonsPanel.buttons[i].setEnabled(false);
+		}
 	}
 
 	public void load3SP() {
@@ -134,40 +138,42 @@ public class MenuBar extends JMenuBar {
 		fileChooser.setFileFilter(filter);
 		fileChooser.setAcceptAllFileFilterUsed(false);
 		fileChooser.showOpenDialog(MenuBar.this);
-		File file = fileChooser.getSelectedFile();
-		try {
-			clear3();
-			ep.mDim = 64;
-			ep.tilePx = 32;
+		if (fileChooser.getSelectedFile() != null) {
+			File file = fileChooser.getSelectedFile();
+			try {
+				clear3();
+				ep.mDim = 64;
+				ep.tilePx = 32;
 
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String delimiters = " ";
+				BufferedReader br = new BufferedReader(new FileReader(file));
+				String delimiters = " ";
 
-			for (int i = 0; i < 64; i++) {
-				String line = br.readLine();
-				String[] tokens = line.split(delimiters);
-				for (int j = 0; j < tokens.length; j++) {
-					ep.M[i][j] = Integer.parseInt(tokens[j]);
-				}
-			}
-
-			br.close();
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
-		ep.points.clear();
-
-		for (int i = 0; i < 64; i++)
-			for (int j = 0; j < 64; j++)
-				for (int id = 0; id < ButtonsPanel.BNumber; id++) {
-					if (ep.M[i][j] == id)
-						ep.points.add(new ImagePoint(new Point(j, i), ButtonsPanel.bImage[id], id));
-
-					if (ep.M[i][j] == ep.stairPos || (ep.M[i][j] >= ep.keyPos && ep.M[i][j] <= ep.playerPos)) {
-						ButtonsPanel.buttons[ep.M[i][j]].setEnabled(false);
+				for (int i = 0; i < 64; i++) {
+					String line = br.readLine();
+					String[] tokens = line.split(delimiters);
+					for (int j = 0; j < tokens.length; j++) {
+						ep.M[i][j] = Integer.parseInt(tokens[j]);
 					}
 				}
-		ep.repaint();
+
+				br.close();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+			ep.points.clear();
+
+			for (int i = 0; i < 64; i++)
+				for (int j = 0; j < 64; j++)
+					for (int id = 0; id < ButtonsPanel.BNumber; id++) {
+						if (ep.M[i][j] == id)
+							ep.points.add(new ImagePoint(new Point(j, i), ButtonsPanel.bImage[id], id));
+
+						if (ep.M[i][j] == ep.stairPos || (ep.M[i][j] >= ep.keyPos && ep.M[i][j] <= ep.playerPos)) {
+							ButtonsPanel.buttons[ep.M[i][j]].setEnabled(false);
+						}
+					}
+			ep.repaint();
+		}
 	}
 
 	@SuppressWarnings("static-access")
